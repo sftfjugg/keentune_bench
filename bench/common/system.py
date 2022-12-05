@@ -1,10 +1,27 @@
+import json
+import requests
 import subprocess
-import os
+
 
 from bench.common.pylog import functionLog
 from bench.common.pylog import logger
 
 
+def httpResponse(response_data, response_ip, response_port):
+    logger.info("send response to {ip}:{port}:{data}".format(
+        ip = response_ip,
+        port = response_port,
+        data = response_data
+    ))
+    try:
+        requests.post(
+            url = "http://{ip}:{port}/apply_result".format(ip = response_ip, port = response_port),
+            data = json.dumps(response_data),
+            timeout = 3)
+    except requests.exceptions.ConnectTimeout:
+        logger.warning("send response timeout!")
+        
+        
 @functionLog
 def sysCommand(command: str, cwd: str = "./"):
     '''Run system command with subprocess.run and return result
