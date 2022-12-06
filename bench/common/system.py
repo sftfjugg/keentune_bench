@@ -15,7 +15,7 @@ def httpResponse(response_data, response_ip, response_port):
     ))
     try:
         requests.post(
-            url = "http://{ip}:{port}/apply_result".format(ip = response_ip, port = response_port),
+            url = "http://{ip}:{port}/benchmark_result".format(ip = response_ip, port = response_port),
             data = json.dumps(response_data),
             timeout = 3)
     except requests.exceptions.ConnectTimeout:
