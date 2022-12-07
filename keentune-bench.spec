@@ -1,7 +1,7 @@
 %define anolis_release 0
 
 Name:           keentune-bench
-Version:        1.4.0
+Version:        2.0
 Release:        %{?anolis_release}%{?dist}
 Url:            https://gitee.com/anolis/keentune_bench
 Summary:        Benchmark script running models for KeenTune
@@ -12,14 +12,12 @@ Source:         %{name}-%{version}.tar.gz
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-BUildRequires:	systemd
-
 BuildArch:      noarch
+Requires:       python3-tornado
 
-Requires:	python3-tornado
-Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
+Requires(post): 	systemd
+Requires(preun): 	systemd
+Requires(postun): 	systemd
 
 %description
 Benchmark script running models for KeenTune

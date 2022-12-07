@@ -1,11 +1,11 @@
-VERSION 	= 1.4.0
+VERSION 	= 2.0
 PREFIX     ?= /usr
 CONFDIR    ?= /etc
 OUTPATH	    = ./bin
 TPMPATH 	= $(DESTDIR)/tmp/KEENTUNE
 BINDIR      = $(DESTDIR)$(PREFIX)/bin
 LOCALBINDIR = $(DESTDIR)$(PREFIX)/local/bin
-SYSCONFDIR  = $(DESTDIR)$(CONFDIR)/keentune/conf/
+SYSCONFDIR  = $(DESTDIR)$(CONFDIR)/keentune/bench
 SYSTEMDDIR  = $(DESTDIR)$(PREFIX)/lib/systemd/system
 
 all: target
