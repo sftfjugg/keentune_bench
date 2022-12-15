@@ -1,4 +1,4 @@
-%define anolis_release 0
+%define anolis_release 1
 
 Name:           keentune-bench
 Version:        2.0
@@ -60,6 +60,9 @@ systemctl daemon-reload
 %{_mandir}/man5/keentune-bench.conf.5*
 
 %changelog
+* Thu Dec 15 2022 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0-1
+- modify installation directory
+
 * Wed Sep 21 2022 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 1.4.0-0
 - feat: new API /avaliable to checkout if destination touchable
 
