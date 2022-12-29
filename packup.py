@@ -43,7 +43,7 @@ def warppingCheck():
 
     with open(os.path.join(source_dir,"setup.py"), 'r') as f:
         script = f.read()
-        if re.search(r'version\s*= "{}",'.format(version_in_spec),script):
+        if re.search(r'version\s*= "2.0.0",'.format(version_in_spec),script):
             print("[OK] check the version of setup.py.")
         else:
             print("[Failed] wrong version number in setup.py.")
