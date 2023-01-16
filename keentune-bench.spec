@@ -12,9 +12,11 @@ Source:         %{name}-%{version}.tar.gz
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-BuildArch:      noarch
-Requires:       python3-tornado
+BUildRequires:	systemd
 
+BuildArch:      noarch
+
+Requires:       python3-tornado
 Requires(post): 	systemd
 Requires(preun): 	systemd
 Requires(postun): 	systemd
@@ -23,7 +25,7 @@ Requires(postun): 	systemd
 Benchmark script running models for KeenTune
 
 %prep
-%setup -n %{name}-%{version}
+%autosetup -n %{name}-%{version}
 
 %build
 %{__python3} setup.py build
@@ -60,7 +62,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/keentune-bench.conf.5*
 
 %changelog
-* Mon Jan 16 2023 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.1
+* Mon Jan 16 2023 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.1-0
 - modify spec
 
 * Thu Dec 15 2022 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.0-0
