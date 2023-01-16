@@ -1,7 +1,7 @@
 %define anolis_release 0
 
 Name:           keentune-bench
-Version:        2.0.0
+Version:        2.0.1
 Release:        %{?anolis_release}%{?dist}
 Url:            https://gitee.com/anolis/keentune_bench
 Summary:        Benchmark script running models for KeenTune
@@ -23,7 +23,7 @@ Requires(postun): 	systemd
 Benchmark script running models for KeenTune
 
 %prep
-%autosetup -n %{name}-%{version}
+%setup -n %{name}-%{version}
 
 %build
 %{__python3} setup.py build
@@ -43,13 +43,13 @@ install -D -m 0644 man/keentune-bench.conf.5 ${RPM_BUILD_ROOT}%{_mandir}/man5/ke
 rm -rf $RPM_BUILD_ROOT
 
 %post
-systemctl daemon-reload
+%systemd_post keentune-bench.service
 
 %preun
 %systemd_preun keentune-bench.service
 
 %postun
-%systemd_postun_with_restart keentune-bench.service
+%systemd_postun keentune-bench.service
 
 %files -f INSTALLED_FILES
 %defattr(-,root,root)
@@ -60,6 +60,9 @@ systemctl daemon-reload
 %{_mandir}/man5/keentune-bench.conf.5*
 
 %changelog
+* Mon Jan 16 2023 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.1
+- modify spec
+
 * Thu Dec 15 2022 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.0-0
 - modify installation directory
 
