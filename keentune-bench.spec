@@ -1,4 +1,4 @@
-%define anolis_release 0
+%define anolis_release 1
 
 Name:           keentune-bench
 Version:        2.0.1
@@ -62,7 +62,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/keentune-bench.conf.5*
 
 %changelog
-* Mon Jan 16 2023 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.1-0
+* Mon Jan 16 2023 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.1-1
 - modify spec
 
 * Thu Dec 15 2022 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.0-0
