@@ -68,6 +68,7 @@ fi
 %changelog
 * Mon Jan 16 2023 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.1-1
 - modify spec
+- remove useless import if collections in bench/controller/status.py
 
 * Thu Dec 15 2022 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.0-0
 - modify installation directory
