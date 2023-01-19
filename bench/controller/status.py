@@ -1,7 +1,5 @@
 import json
 
-from collections import Iterable
-
 from tornado.web import RequestHandler
 from bench.common.system import checkAddressAvaliable
 
