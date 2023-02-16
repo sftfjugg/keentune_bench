@@ -46,12 +46,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %systemd_post keentune-bench.service
+if [ -f "%{_prefix}/lib/systemd/system/keentune-bench.service" ]; then
+    systemctl enable keentune-bench.service || :
+    systemctl start keentune-bench.service || :
+fi
 
 %preun
 %systemd_preun keentune-bench.service
 
 %postun
-%systemd_postun keentune-bench.service
+%systemd_postun_with_restart keentune-bench.service
 
 %files -f INSTALLED_FILES
 %defattr(-,root,root)
