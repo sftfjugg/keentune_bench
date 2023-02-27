@@ -116,7 +116,7 @@ class BenchmarkHandler(RequestHandler):
         self.finish()
         
         p = BenchmarkProcess(
-            benchmark_cmd = "python3 test.py",
+            benchmark_cmd = request_data["benchmark_cmd"],
             response_ip = request_data['resp_ip'],
             response_port = request_data['resp_port'],
             bench_id = request_data['bench_id'],
