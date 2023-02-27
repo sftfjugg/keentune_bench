@@ -125,7 +125,7 @@ class BenchmarkHandler(RequestHandler):
         p.start()
 
 
-class BenchmarkStopHandler(RequestHandler):
+class BenchmarkTerminateHandler(RequestHandler):
     def get(self):
         try:
             for proc in BENCH_PROC:
@@ -133,5 +133,6 @@ class BenchmarkStopHandler(RequestHandler):
         
         except Exception as e:
             self.write(json.dumps({"suc" : False, "msg": "{}".format(e)}))
+            
         else:
             self.write(json.dumps({"suc" : True, "msg": ""}))
