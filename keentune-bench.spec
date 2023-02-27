@@ -62,6 +62,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/keentune-bench.conf.5*
 
 %changelog
+* Mon Feb 27 2023 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.1.0-1
+- remove benchamrk module
+- running benchamrk in subprocess
+- add /stop api to kill benchmark running subprocess
+
 * Mon Jan 16 2023 Runzhe Wang <runzhe.wrz@alibaba-inc.com> - 2.0.1-1
 - modify spec
 - remove useless import if collections in bench/controller/status.py
