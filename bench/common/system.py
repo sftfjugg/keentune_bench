@@ -3,9 +3,7 @@ import requests
 import subprocess
 
 
-from bench.common.pylog import functionLog
 from bench.common.pylog import logger
-
 
 def httpResponse(response_data, response_ip, response_port):
     logger.info("send response to {ip}:{port}:{data}".format(
@@ -22,7 +20,6 @@ def httpResponse(response_data, response_ip, response_port):
         logger.warning("send response timeout!")
         
         
-@functionLog
 def sysCommand(command: str, cwd: str = "./"):
     '''Run system command with subprocess.run and return result
     '''

@@ -2,7 +2,7 @@ import tornado
 import os
 
 from bench.controller.sendfile import SendfileHandler
-from bench.controller.benchmark import BenchmarkHandler
+from bench.controller.benchmark import BenchmarkHandler,BenchmarkStopHandler
 from bench.controller.status import StatusHandler, AvaliableDomainHandler
 
 from bench.common.config import Config
@@ -21,6 +21,7 @@ def main():
     app = tornado.web.Application(handlers=[
         (r"/sendfile", SendfileHandler),
         (r"/benchmark", BenchmarkHandler),
+        (r"/stop", BenchmarkStopHandler),
         (r"/status", StatusHandler),
         (r"/avaliable", AvaliableDomainHandler)
     ])
