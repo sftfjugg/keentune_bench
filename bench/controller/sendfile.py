@@ -4,7 +4,6 @@ import json
 from tornado.web import RequestHandler
 
 from bench.common.config import Config
-from bench.common.pylog import functionLog
 
 
 class SendfileHandler(RequestHandler):
@@ -38,7 +37,6 @@ class SendfileHandler(RequestHandler):
             self.finish()
 
 
-@functionLog
 def _sendFileImpl(file_content, file_encode, file_path):
     """ Save file content to KeenTune work dir
 
