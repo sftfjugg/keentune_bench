@@ -32,12 +32,12 @@ class BenchmarkProcess(multiprocessing.Process):
         self.benchmark_cmd = " ".join(benchmark_cmd_list)
 
         self.proc = subprocess.Popen(
-            args = self.benchmark_cmd,
-            shell = True,
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE
+            args   = self.benchmark_cmd,
+            shell  = True,
+            stderr = subprocess.PIPE,
+            stdout = subprocess.PIPE
         )
-        logger.info("create benchmark process, pid = {}".format(self.proc.pid))
+        logger.info("create benchmark process, cmd = {}, pid = {}".format(self.benchmark_cmd, self.proc.pid))
 
 
     def _parseBenchmarkResult(self, benchmark_result: str):
@@ -55,18 +55,18 @@ class BenchmarkProcess(multiprocessing.Process):
         benchmark_result = defaultdict(list)
 
         try:
+            logger.debug("waiting for benchmark runing")
             stdoutdata, stderrdata = self.proc.communicate()
             stdoutdata = stdoutdata.decode('UTF-8', 'strict').strip()
             stderrdata = stderrdata.decode('UTF-8', 'strict').strip()
 
             if stderrdata != "":
-                logger.error("Wrong Benchmark Running result: stderr = {stderr}".format(
-                    stderr = stderrdata))
-                return False, "Wrong Benchmark Running result: stderr = {stderr}".format(stderr = stderrdata)
+                logger.error("benchmark running stderr: stderr = {stderr}".format(stderr = stderrdata))
+                return False, "benchmark running stderr: stderr = {stderr}".format(stderr = stderrdata)
 
             if stdoutdata == "":
-                logger.error("Wrong Benchmark Running result: no output")
-                return False, "Wrong Benchmark Running result: no output"
+                logger.error("benchmark result error: no output")
+                return False, "benchmark result error: no output"
 
             try:
                 benchmark_res = self._parseBenchmarkResult(stdoutdata)
@@ -78,10 +78,10 @@ class BenchmarkProcess(multiprocessing.Process):
                 return False, "wrong benchmark output format, benchmark script should print result as key=value with ',' to separat"
 
         except Exception as e:
-            logger.error("Benchmark running error: {}".format(e))
-            return False, "Benchmark running error: {}".format(e)
+            logger.error("benchmark running error: {}".format(e))
+            return False, "benchmark running error: {}".format(e)
         
-        logger.info("Benchmark running sucess: {}".format(benchmark_result))
+        logger.info("benchmark running sucess: {}".format(benchmark_result))
         return True, dict(benchmark_result)
 
     def run(self):
@@ -94,7 +94,7 @@ class BenchmarkProcess(multiprocessing.Process):
             "bench_id": self.bench_id
         }
 
-        logger.info("Response benchmark running result to {response_ip}:{response_port} : {response_data}".format(
+        logger.info("response benchmark running result to {response_ip}:{response_port} : {response_data}".format(
             response_port = self.response_port,
             response_ip = self.response_ip,
             response_data = response_data
@@ -102,11 +102,12 @@ class BenchmarkProcess(multiprocessing.Process):
 
         httpResponse(response_data, self.response_ip, self.response_port)
 
-    def terminate(self):
+    def _terminate(self):
         ''' process.terminate() '''
 
-        logger.info("benchmark process terminated")
+        logger.info("benchmark process terminated, pid = {}".format(self.pid))
         self.proc.kill()
+        self.terminate()
 
 
 class BenchmarkHandler(RequestHandler):
@@ -129,7 +130,7 @@ class BenchmarkTerminateHandler(RequestHandler):
     def get(self):
         try:
             for proc in BENCH_PROC:
-                proc.terminate()
+                proc._terminate()
         
         except Exception as e:
             self.write(json.dumps({"suc" : False, "msg": "{}".format(e)}))
