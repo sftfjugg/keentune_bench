@@ -1,6 +1,7 @@
 import re
 import os
 import json
+import time
 import subprocess
 import multiprocessing
 
@@ -112,6 +113,7 @@ class BenchmarkProcess(multiprocessing.Process):
 
 class BenchmarkHandler(RequestHandler):
     def post(self):
+        time.sleep(6)
         request_data = json.loads(self.request.body)
         self.write(json.dumps({"suc" : True, "msg": "Benchmark is Runing"}))
         self.finish()
