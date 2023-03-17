@@ -3,7 +3,7 @@ import os
 
 from bench.controller.sendfile import SendfileHandler
 from bench.controller.benchmark import BenchmarkHandler,BenchmarkTerminateHandler
-from bench.controller.status import StatusHandler, AvaliableDomainHandler
+from bench.controller.status import StatusHandler, AvaliableAddressHandler
 
 from bench.common.config import Config
 
@@ -23,10 +23,9 @@ def main():
         (r"/benchmark", BenchmarkHandler),
         (r"/terminate", BenchmarkTerminateHandler),
         (r"/status", StatusHandler),
-        (r"/avaliable", AvaliableDomainHandler)
+        (r"/avaliable", AvaliableAddressHandler)
     ])
     app.listen(Config.BENCH_PORT)
-    print("KeenTune bench running at port {}...".format(Config.BENCH_PORT))
     tornado.ioloop.IOLoop.current().start()
 
 

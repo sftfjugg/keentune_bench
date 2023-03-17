@@ -27,6 +27,7 @@ setup(
 
     data_files  = [
         ("/etc/keentune/bench", ["bench/bench.conf"]),
+        ("/etc/keentune/bench", ["bench/logging.conf"]),
     ],
 
     entry_points = {

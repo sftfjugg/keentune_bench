@@ -1,9 +1,10 @@
 import json
 import requests
 import subprocess
+import logging
 
+logger = logging.getLogger('common')
 
-from bench.common.pylog import logger
 
 def httpResponse(response_data, response_ip, response_port):
     logger.info("send response to {ip}:{port}:{data}".format(
@@ -17,7 +18,7 @@ def httpResponse(response_data, response_ip, response_port):
             data = json.dumps(response_data),
             timeout = 3)
     except requests.exceptions.ConnectTimeout:
-        logger.warning("send response timeout!")
+        logger.warning("send response timeout: ip = {}, port = {}".format(response_ip, response_port))
         
         
 def sysCommand(command: str, cwd: str = "./"):
@@ -49,7 +50,7 @@ def checkAddressAvaliable(address_list: list):
         if not suc:
             logger.warning("Failed to ping {}".format(ip))
         else:
-            logger.info("Success to ping {}".format(ip))
+            logger.debug("Success to ping {}".format(ip))
             
         result[ip] = suc
     return result
