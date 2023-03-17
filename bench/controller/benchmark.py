@@ -1,16 +1,16 @@
-import re
 import os
 import json
 import subprocess
 import multiprocessing
+import logging
 
 from collections import defaultdict
 from tornado.web import RequestHandler
 
 from bench.common.config import Config
 from bench.common.system import httpResponse
-from bench.common.pylog import logger
 
+logger = logging.getLogger('common')
 
 BENCH_PROC = []
 
@@ -39,7 +39,6 @@ class BenchmarkProcess(multiprocessing.Process):
         )
         logger.info("create benchmark process, cmd = {}, pid = {}".format(self.benchmark_cmd, self.proc.pid))
 
-
     def _parseBenchmarkResult(self, benchmark_result: str):
         benchmark_result_dict = {}
         
@@ -49,7 +48,6 @@ class BenchmarkProcess(multiprocessing.Process):
             benchmark_result_dict[name] = float(value)
 
         return benchmark_result_dict
-
 
     def runbenchmark(self):
         benchmark_result = defaultdict(list)
@@ -73,9 +71,9 @@ class BenchmarkProcess(multiprocessing.Process):
                 for k in benchmark_res.keys():
                     benchmark_result[k].append(benchmark_res[k])
 
-            except Exception:
-                logger.error("wrong benchmark output format, benchmark script should print result as key=value with ',' to separat")
-                return False, "wrong benchmark output format, benchmark script should print result as key=value with ',' to separat"
+            except Exception as e:
+                logger.error("wrong benchmark output format of '{}': {}".format(stdoutdata, e))
+                return False, "wrong benchmark output format of '{}': {}".format(stdoutdata, e)
 
         except Exception as e:
             logger.error("benchmark running error: {}".format(e))
@@ -101,7 +99,7 @@ class BenchmarkProcess(multiprocessing.Process):
         ))
 
         httpResponse(response_data, self.response_ip, self.response_port)
-
+        
     def _terminate(self):
         ''' process.terminate() '''
 
@@ -116,24 +114,21 @@ class BenchmarkHandler(RequestHandler):
         self.write(json.dumps({"suc" : True, "msg": "Benchmark is Runing"}))
         self.finish()
         
-        p = BenchmarkProcess(
+        proc = BenchmarkProcess(
             benchmark_cmd = request_data["benchmark_cmd"],
             response_ip = request_data['resp_ip'],
             response_port = request_data['resp_port'],
             bench_id = request_data['bench_id'],
         )
-        BENCH_PROC.append(p)
-        p.start()
+        BENCH_PROC.append(proc)
+        proc.start()
 
 
 class BenchmarkTerminateHandler(RequestHandler):
     def get(self):
-        try:
-            for proc in BENCH_PROC:
-                proc._terminate()
+        logger.info("Get terminate requests, ready to clean {} proc".format(BENCH_PROC.__len__()))
+        while BENCH_PROC.__len__() > 0:
+            proc = BENCH_PROC.pop()
+            proc._terminate()
         
-        except Exception as e:
-            self.write(json.dumps({"suc" : False, "msg": "{}".format(e)}))
-            
-        else:
-            self.write(json.dumps({"suc" : True, "msg": ""}))
+        self.write(json.dumps({"suc" : True, "msg": ""}))

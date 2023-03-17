@@ -1,2 +1,2 @@
 setuptools
-tornado
+tornado==6.1

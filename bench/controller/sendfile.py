@@ -1,20 +1,24 @@
 import os
 import json
+import logging
 
 from tornado.web import RequestHandler
 
 from bench.common.config import Config
 
+logger = logging.getLogger('common')
+
 
 class SendfileHandler(RequestHandler):
     def post(self):
         request_data = json.loads(self.request.body)
-
+        
         try:
             file_name = request_data["file_name"]
             file_encode = request_data["encode_type"]
             file_content = request_data["body"]
-
+            logger.info("Get sendfile reuqests: filename = {}".format(file_name))
+            
         except KeyError as error_key:
             self.write(json.dumps({
                 "suc": False,
